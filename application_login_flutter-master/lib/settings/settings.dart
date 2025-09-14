@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/appbar.dart';
 
 class SettingsPage extends StatelessWidget {
   final String username;
@@ -47,35 +48,50 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        _buildSectionTitle("Cuenta"),
-        _buildSettingCard(
-          icon: Icons.email,
-          title: "Cambiar Email",
-          description: "Actualiza tu dirección de correo electrónico",
-          onTap: () {},
-        ),
-        _buildSettingCard(
-          icon: Icons.lock,
-          title: "Cambiar Contraseña",
-          description: "Actualiza tu contraseña de acceso",
-          onTap: () {},
-        ),
-        _buildSectionTitle("Apariencia"),
-        _buildSettingCard(
-          icon: Icons.color_lens,
-          title: "Tema de la App",
-          description: "Cambia entre modo claro y oscuro",
-          onTap: () {},
-        ),
-        _buildSettingCard(
-          icon: Icons.language,
-          title: "Idioma",
-          description: "Selecciona el idioma de la aplicación",
-          onTap: () {},
-        ),
-      ],
+    return Scaffold(
+      appBar: const CustomAppBar(title: 'Opciones de Configuración', showBackButton: true),
+      body: Column(
+        children: [
+          // Subtítulo centrado debajo del AppBar
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          ),
+
+          // ListView con las opciones
+          Expanded(
+            child: ListView(
+              children: [
+                _buildSectionTitle("Cuenta"),
+                _buildSettingCard(
+                  icon: Icons.email,
+                  title: "Cambiar Email",
+                  description: "Actualiza tu dirección de correo electrónico",
+                  onTap: () {},
+                ),
+                _buildSettingCard(
+                  icon: Icons.lock,
+                  title: "Cambiar Contraseña",
+                  description: "Actualiza tu contraseña de acceso",
+                  onTap: () {},
+                ),
+                _buildSectionTitle("Apariencia"),
+                _buildSettingCard(
+                  icon: Icons.color_lens,
+                  title: "Tema de la App",
+                  description: "Cambia entre modo claro y oscuro",
+                  onTap: () {},
+                ),
+                _buildSettingCard(
+                  icon: Icons.language,
+                  title: "Idioma",
+                  description: "Selecciona el idioma de la aplicación",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
