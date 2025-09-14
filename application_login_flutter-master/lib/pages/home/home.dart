@@ -3,8 +3,9 @@ import '../../widgets/appbar.dart';
 import '../../widgets/navigation_drawer.dart';
 import '../../widgets/navigation_bottom.dart';
 import '../user/user.dart';
-import '../auth/change_password.dart';
+//import '../auth/change_password.dart';
 import '../auth/login.dart';
+import '../../settings/settings.dart'; // importa tu settings
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pages = [
       HomeContent(username: widget.username),
       UserScreen(username: widget.username, password: widget.password),
-      const ChangePasswordScreen(),
+      SettingsPage(username: widget.username), // reemplaza ChangePasswordScreen
     ];
   }
 
