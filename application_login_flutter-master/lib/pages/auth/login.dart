@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/appbar.dart';
 import '../home/home.dart';
 import '../user/form.dart';
+import '../auth//validations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -89,6 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese su usuario';
+                  } else if (!emailRegExp.hasMatch(value)) {
+                    return 'ingrese un correo valido';
                   }
                   return null;
                 },
@@ -105,6 +108,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese su contraseña';
+                  } else if (!passwordRegExp.hasMatch(value)){
+                    //return 'ingrese una contraseña valida, debe ser mayor entre 6 y 16 caracteres, una mayuscula, minuscula y un caracter no alfanumerico,';
+                    return 'Ingrese una contraseña válida:\n'
+                            '- Entre 6 y 16 caracteres\n'
+                            '- Al menos una mayúscula\n'
+                            '- Al menos una minúscula\n'
+                            '- Al menos un número\n'
+                            '- Al menos un carácter no alfanumérico';
                   }
                   return null;
                 },

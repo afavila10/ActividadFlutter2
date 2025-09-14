@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/appbar.dart';
+import '../auth/validations.dart';
 
 class UserFormScreen extends StatefulWidget {
   const UserFormScreen({super.key});
@@ -65,6 +66,10 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese un usuario';
+                  }else if (!usernameRegExp.hasMatch(value)) {
+                    return 'ingrese un usuario valido \n'
+                           'sin espacios ni caracteres especiales \n'
+                           'debe tener uno o mas carcteres';
                   }
                   return null;
                 },
@@ -81,9 +86,8 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese un email';
-                  }
-                  if (!value.contains('@')) {
-                    return 'Ingrese un email válido';
+                  }else if (!emailRegExp.hasMatch(value)) {
+                    return 'ingrese un correo valido';
                   }
                   return null;
                 },
@@ -100,9 +104,14 @@ class _UserFormScreenState extends State<UserFormScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese una contraseña';
-                  }
-                  if (value.length < 6) {
-                    return 'La contraseña debe tener al menos 6 caracteres';
+                  }else if (!passwordRegExp.hasMatch(value)){
+                    //return 'ingrese una contraseña valida, debe ser mayor entre 6 y 16 caracteres, una mayuscula, minuscula y un caracter no alfanumerico,';
+                    return 'Ingrese una contraseña válida:\n'
+                            '- Entre 6 y 16 caracteres\n'
+                            '- Al menos una mayúscula\n'
+                            '- Al menos una minúscula\n'
+                            '- Al menos un número\n'
+                            '- Al menos un carácter no alfanumérico';
                   }
                   return null;
                 },
