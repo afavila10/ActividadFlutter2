@@ -5,6 +5,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool showBackButton;
   final VoidCallback? onMenuPressed;
+  final Color? titleColor; // 👈 nuevo parámetro
+  final Color? iconColor;  // 👈 nuevo parámetro
 
   const CustomAppBar({
     super.key,
@@ -12,6 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.showBackButton = false,
     this.onMenuPressed,
+    this.titleColor,
+    this.iconColor,
   });
 
   @override
@@ -20,10 +24,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: titleColor ?? Colors.white, // 👈 ahora puedes cambiar el color del título
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       centerTitle: true,
       backgroundColor: Theme.of(context).primaryColor,
-      foregroundColor: Colors.white,
+      iconTheme: IconThemeData(
+        color: iconColor ?? Colors.white, // 👈 color de íconos
+      ),
       automaticallyImplyLeading: showBackButton,
       leading: showBackButton
           ? null

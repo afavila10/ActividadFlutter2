@@ -1,44 +1,35 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static final ThemeData lightTheme = ThemeData(
-    primaryColor: Colors.blue,
-    colorScheme: const ColorScheme.light(
-      primary: Colors.blue,
-      secondary: Colors.green,
-    ),
+  static final lightTheme = ThemeData(
+    brightness: Brightness.light,
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
-    ),
-    textTheme: const TextTheme(
-      // ignore: deprecated_member_use
-      titleLarge: TextStyle(
+      //backgroundColor: Colors.purple,
+      titleTextStyle: TextStyle(
+        color: Color.fromARGB(255, 243, 239, 239),   // 👈 color del título
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
       ),
-      // ignore: deprecated_member_use
-      bodyMedium: TextStyle(
-        fontSize: 16,
-        color: Colors.black87,
+      iconTheme: IconThemeData(
+        color: Colors.black,   // 👈 color de los íconos
       ),
+      foregroundColor: Colors.black,
     ),
   );
 
-  static final ThemeData darkTheme = ThemeData(
-    primaryColor: Colors.blueGrey,
-    colorScheme: const ColorScheme.dark(
-      primary: Colors.blueGrey,
-      secondary: Colors.green,
-    ),
+  static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blueGrey,
-      foregroundColor: Colors.white,
+      //backgroundColor: Color.fromARGB(255, 139, 135, 135),
+      titleTextStyle: TextStyle(
+        color: Colors.white,  // 👈 color del título
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white,  // 👈 color de íconos
+      ),
+      foregroundColor: Color.fromARGB(255, 246, 246, 246),
     ),
   );
 }

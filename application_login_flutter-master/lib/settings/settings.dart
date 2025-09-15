@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../widgets/appbar.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
+import '../widgets/appbar.dart';
 
 class SettingsPage extends StatelessWidget {
   final String username;
 
   const SettingsPage({super.key, required this.username});
 
+  /// 🔹 Título de cada sección
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -23,6 +26,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  /// 🔹 Tarjetas reutilizables
   Widget _buildSettingCard({
     required IconData icon,
     required String title,
@@ -46,49 +50,154 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  /// 🔹 Modal genérico de texto (Email, Password, Idioma, etc.)
+  void _showInputDialog(
+    BuildContext context, {
+    required String title,
+    required String hintText,
+    required void Function(String) onConfirm,
+  }) {
+    final TextEditingController controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: hintText,
+              border: const OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: const Text("Guardar"),
+              onPressed: () {
+                onConfirm(controller.text);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// 🔹 Modal de selección de Tema
+  void _showThemeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Seleccionar Tema"),
+          content: Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<bool>(
+                    title: const Text("Claro"),
+                    value: false,
+                    groupValue: themeProvider.isDarkMode,
+                    onChanged: (value) {
+                      themeProvider.toggleTheme(false);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  RadioListTile<bool>(
+                    title: const Text("Oscuro"),
+                    value: true,
+                    groupValue: themeProvider.isDarkMode,
+                    onChanged: (value) {
+                      themeProvider.toggleTheme(true);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Opciones de Configuración', showBackButton: true),
-      body: Column(
+      appBar: AppBar(
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Configuración',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+          ],
+        ),
+        //backgroundColor: const Color.fromARGB(255, 103, 80, 164),
+      ),
+      body: ListView(
         children: [
-          // Subtítulo centrado debajo del AppBar
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          _buildSectionTitle("Cuenta"),
+          _buildSettingCard(
+            icon: Icons.email,
+            title: "Cambiar Email",
+            description: "Actualiza tu dirección de correo electrónico",
+            onTap: () {
+              _showInputDialog(
+                context,
+                title: "Cambiar Email",
+                hintText: "Introduce tu nuevo email",
+                onConfirm: (newEmail) {
+                  debugPrint("Nuevo Email: $newEmail");
+                },
+              );
+            },
+          ),
+          _buildSettingCard(
+            icon: Icons.lock,
+            title: "Cambiar Contraseña",
+            description: "Actualiza tu contraseña de acceso",
+            onTap: () {
+              _showInputDialog(
+                context,
+                title: "Cambiar Contraseña",
+                hintText: "Introduce tu nueva contraseña",
+                onConfirm: (newPassword) {
+                  debugPrint("Nueva contraseña: $newPassword");
+                },
+              );
+            },
           ),
 
-          // ListView con las opciones
-          Expanded(
-            child: ListView(
-              children: [
-                _buildSectionTitle("Cuenta"),
-                _buildSettingCard(
-                  icon: Icons.email,
-                  title: "Cambiar Email",
-                  description: "Actualiza tu dirección de correo electrónico",
-                  onTap: () {},
-                ),
-                _buildSettingCard(
-                  icon: Icons.lock,
-                  title: "Cambiar Contraseña",
-                  description: "Actualiza tu contraseña de acceso",
-                  onTap: () {},
-                ),
-                _buildSectionTitle("Apariencia"),
-                _buildSettingCard(
-                  icon: Icons.color_lens,
-                  title: "Tema de la App",
-                  description: "Cambia entre modo claro y oscuro",
-                  onTap: () {},
-                ),
-                _buildSettingCard(
-                  icon: Icons.language,
-                  title: "Idioma",
-                  description: "Selecciona el idioma de la aplicación",
-                  onTap: () {},
-                ),
-              ],
-            ),
+          _buildSectionTitle("Apariencia"),
+          _buildSettingCard(
+            icon: Icons.color_lens,
+            title: "Tema de la App",
+            description: "Cambia entre modo claro y oscuro",
+            onTap: () => _showThemeDialog(context),
+          ),
+          _buildSettingCard(
+            icon: Icons.language,
+            title: "Idioma",
+            description: "Selecciona el idioma de la aplicación",
+            onTap: () {
+              _showInputDialog(
+                context,
+                title: "Cambiar Idioma",
+                hintText: "Ejemplo: Español, Inglés...",
+                onConfirm: (newLang) {
+                  debugPrint("Nuevo idioma: $newLang");
+                },
+              );
+            },
           ),
         ],
       ),
