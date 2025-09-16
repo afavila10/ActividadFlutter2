@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
-import '../widgets/appbar.dart';
 
 class SettingsPage extends StatelessWidget {
   final String username;
@@ -130,18 +129,19 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Configuración',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+              selectionColor: theme.primaryColor,
             ),
           ],
         ),
-        //backgroundColor: const Color.fromARGB(255, 103, 80, 164),
+        backgroundColor: const Color.fromARGB(255, 103, 80, 164),
       ),
       body: ListView(
         children: [

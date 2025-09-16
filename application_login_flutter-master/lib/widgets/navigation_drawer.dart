@@ -17,81 +17,83 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           _buildHeader(context),
-          _buildMenuItems(context),
+          _buildMenuItems(context, theme),
         ],
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+
     return DrawerHeader(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Theme.of(context).primaryColor,
-            Theme.of(context).primaryColor.withOpacity(0.8),
-          ],
+      colors: [
+        theme.primaryColor,
+        theme.primaryColor.withAlpha((0.8 * 255).round()),
+      ],
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 30,
-            backgroundColor: Colors.white,
+            backgroundColor: theme.colorScheme.onPrimary,
             child: Icon(
               Icons.person,
               size: 40,
-              color: Colors.blue,
+              color: theme.primaryColor,
             ),
           ),
           const SizedBox(height: 15),
           Text(
             username,
-            style: const TextStyle(
-              color: Colors.white,
+      style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onPrimary,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text(
+          /*Text(
             'usuario@demo.com',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
+      style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onPrimary.withAlpha((0.8 * 255).round()),
             ),
-          ),
+          ),*/
         ],
       ),
     );
   }
 
-  Widget _buildMenuItems(BuildContext context) {
+  Widget _buildMenuItems(BuildContext context, ThemeData theme) {
     return Column(
       children: [
         _buildListTile(
-          context,
+          context, theme,
           Icons.home,
           'Inicio',
           0,
           currentIndex == 0,
         ),
         _buildListTile(
-          context,
+          context, theme,
           Icons.person,
           'Mi Perfil',
           1,
           currentIndex == 1,
         ),
         _buildListTile(
-          context,
+          context,theme,
           Icons.settings,
           'Configuración',
           2,
@@ -99,70 +101,72 @@ class CustomDrawer extends StatelessWidget {
         ),
         const Divider(),
         _buildListTile(
-          context,
+          context, theme,
           Icons.notifications,
           'Notificaciones',
           3,
           false,
         ),
         _buildListTile(
-          context,
+          context,theme,
           Icons.help,
           'Ayuda',
           4,
           false,
         ),
         _buildListTile(
-          context,
+          context,theme,
           Icons.info,
           'Acerca de',
           5,
           false,
         ),
         const Divider(),
-        _buildLogoutTile(context),
+        _buildLogoutTile(context, theme,),
       ],
     );
   }
 
   Widget _buildListTile(
     BuildContext context,
+    ThemeData theme,
     IconData icon,
     String title,
     int index,
     bool isSelected,
   ) {
+    final color = isSelected ? theme.primaryColor : theme.iconTheme.color;
+
     return ListTile(
       leading: Icon(
         icon,
-        color: isSelected ? Theme.of(context).primaryColor : Colors.grey[700],
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected ? Theme.of(context).primaryColor : Colors.black87,
-        ),
-      ),
+        color: color),
+        title: Text(
+          title,
+          style: theme.textTheme.bodyMedium?.copyWith(
+          fontWeight: isSelected ? FontWeight.bold :FontWeight.normal,
+          color: isSelected ? theme.primaryColor : theme.textTheme.bodyMedium?.color,
+        )
+      ),  
       trailing: isSelected
           ? Icon(
               Icons.arrow_forward,
-              color: Theme.of(context).primaryColor,
+              color: theme.primaryColor,
               size: 20,
             )
           : null,
       onTap: () => onItemSelected(index),
       selected: isSelected,
-      selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.1),
+      selectedTileColor: theme.colorScheme.primaryContainer,
     );
   }
 
-  Widget _buildLogoutTile(BuildContext context) {
+  Widget _buildLogoutTile(BuildContext context, ThemeData theme) {
     return ListTile(
-      leading: const Icon(Icons.logout, color: Colors.red),
-      title: const Text(
+      leading: Icon(Icons.logout, color: theme.colorScheme.error),
+      title: Text(
         'Cerrar Sesión',
-        style: TextStyle(color: Colors.red),
+        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.error),
       ),
       onTap: () {
         Navigator.pop(context); // Cerrar el drawer
