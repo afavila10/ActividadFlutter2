@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/settings/settings.dart';
+
 import '../../widgets/appbar.dart';
 
 class UserScreen extends StatelessWidget {
@@ -46,7 +48,14 @@ class UserScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(username: username),
+                    )
+                );
+              },
               child: const Text('Editar Perfil'),
             ),
           ],
